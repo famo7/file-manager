@@ -1,0 +1,37 @@
+<div class="bg-slate-900 text-white rounded-2xl shadow-xl p-8 sm:p-12 flex flex-col items-center text-center">
+  <% if (user) { %>
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-indigo-400 mb-4 animate-bounce" viewBox="0 0 20 20"
+      fill="currentColor">
+      <path fill-rule="evenodd"
+        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+        clip-rule="evenodd" />
+    </svg>
+    <h2 class="text-3xl sm:text-4xl font-extrabold mb-2 leading-tight">Welcome Back, <span class="text-indigo-400">
+        <%= user.userName %>
+      </span>!</h2>
+    <p class="text-lg text-gray-300 mb-6 max-w-lg">You are now logged in and have exclusive access to your content.</p>
+    <a href="/folders"
+      class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-1">
+      Go to Folders
+    </a>
+    <% } else { %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-white mb-4 animate-pulse" viewBox="0 0 20 20"
+        fill="currentColor">
+        <path
+          d="M11 6a3 3 0 11-6 0 3 3 0 016 0zM14 11a1 1 0 011-1h2a1 1 0 011 1v3a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3zM1 11a1 1 0 011-1h2a1 1 0 011 1v3a1 1 0 01-1 1H2a1 1 0 01-1-1v-3zM7 11a1 1 0 011-1h2a1 1 0 011 1v3a1 1 0 01-1 1H8a1 1 0 01-1-1v-3z" />
+      </svg>
+      <h2 class="text-3xl sm:text-4xl font-extrabold mb-2 leading-tight">Join Our Community</h2>
+      <p class="text-lg text-gray-300 mb-6 max-w-lg">Unlock private content and exclusive insights by joining us today.
+      </p>
+      <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+        <a href="#" id="loginLink"
+          class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-1">
+          Log In
+        </a>
+        <a href="#" id="signupLink"
+          class="inline-block bg-white text-indigo-600 font-bold py-3 px-8 rounded-full text-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-1">
+          Sign Up
+        </a>
+      </div>
+      <% } %>
+</div>

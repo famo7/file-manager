@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UploadMaster</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .error-box {
+      background-color: #ffe6e6;
+      color: #cc0000;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 6px;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+
+<body class="bg-slate-50 text-gray-800 antialiased">
+
+  <header class="bg-slate-900 text-white p-4">
+    <div class="container mx-auto flex justify-between items-center px-4 sm:px-6 lg:px-8">
+      <h1 class="text-xl sm:text-2xl font-bold tracking-tight">UploadMaster</h1>
+      <nav class="flex items-center space-x-4">
+        <% if (user) { %>
+          <span class="text-white text-sm sm:text-base font-medium">Welcome, <%= user.userName %>!</span>
+          <form action="/logout" method="POST">
+            <button type="submit"
+              class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-full transition duration-300 ease-in-out">
+              Logout
+            </button>
+          </form>
+          <% } else { %>
+            <a href="#" id="showLoginBtn"
+              class="text-gray-300 hover:text-white font-medium transition duration-300 ease-in-out">
+              Sign In
+            </a>
+            <a href="#" id="showSignupBtnHeader"
+              class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-full transition duration-300 ease-in-out">
+              Sign Up
+            </a>
+            <% } %>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container mx-auto mt-8 p-4 sm:p-6 lg:p-8">
+    <% if (!user) { %>
+      <section
+        class="text-center py-20 bg-gradient-to-br from-indigo-500 to-purple-600 text-white rounded-2xl shadow-xl mb-12">
+        <h2 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-4 leading-tight">
+          Your Exclusive Access Awaits
+        </h2>
+        <p class="text-xl sm:text-2xl font-light max-w-2xl mx-auto mb-8">
+          Unlock a world of private content, exclusive insights, and a community like no other.
+        </p>
+        <button id="showSignupBtnHero"
+          class="inline-block bg-white text-indigo-600 font-bold py-3 px-8 rounded-full text-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-1">
+          Join Now
+        </button>
+      </section>
+
+      <section class="grid md:grid-cols-3 gap-8 text-center mb-12">
+        <div
+          class="bg-white p-8 rounded-xl shadow-md transform hover:scale-105 transition-transform duration-300 ease-in-out">
+          <h3 class="text-2xl font-semibold mb-2">Private Content</h3>
+          <p class="text-gray-600">Gain access to articles, videos, and resources you can't find anywhere else.</p>
+        </div>
+        <div
+          class="bg-white p-8 rounded-xl shadow-md transform hover:scale-105 transition-transform duration-300 ease-in-out">
+          <h3 class="text-2xl font-semibold mb-2">Community Hub</h3>
+          <p class="text-gray-600">Connect with fellow members, share ideas, and grow together.</p>
+        </div>
+        <div
+          class="bg-white p-8 rounded-xl shadow-md transform hover:scale-105 transition-transform duration-300 ease-in-out">
+          <h3 class="text-2xl font-semibold mb-2">Exclusive Events</h3>
+          <p class="text-gray-600">Get invitations to members-only workshops, webinars, and more.</p>
+        </div>
+      </section>
+
+      <section class="text-center py-12 bg-slate-900 text-white rounded-2xl mb-12">
+        <h3 class="text-3xl font-bold mb-4">Ready to unlock your potential?</h3>
+        <p class="text-lg mb-6 max-w-2xl mx-auto">
+          Don't miss out on what's waiting for you inside. Become a member today.
+        </p>
+        <button id="showSignupBtnCta"
+          class="inline-block bg-indigo-500 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg hover:bg-indigo-600 transition-colors duration-300 ease-in-out">
+          Sign Up Now
+        </button>
+      </section>
+      <% } %>
+
+        <%- body %>
+
+  </main>
+
+  <footer class="bg-slate-900 text-gray-400 text-center py-6">
+    <div class="container mx-auto px-4">
+      <p>&copy; <%= new Date().getFullYear() %> UploadMaster. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Auth Modal -->
+  <div id="authModal"
+    class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden items-center justify-center p-4 z-50
+  <% if (typeof showLogin !== 'undefined' && showLogin || typeof showSignup !== 'undefined' && showSignup) { %> flex <% } %>">
+    <div class="bg-white p-8 rounded-xl shadow-2xl max-w-sm w-full relative">
+      <button id="closeModal" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">&times;</button>
+      <div id="loginFormContainer" class="<% if (typeof showLogin === 'undefined' || !showLogin) { %> hidden <% } %>">
+        <h2 class="text-2xl font-bold mb-4 text-center">Sign In</h2>
+        <% if (typeof loginError !=='undefined' && loginError) { %>
+          <div class="error-box">
+            <p>
+              <%= loginError %>
+            </p>
+          </div>
+          <% } %>
+            <form id="loginForm" action="/login" method="POST">
+              <div class="mb-4">
+                <label for="loginUsername" class="block text-gray-700 text-sm font-bold mb-2">Username</label>
+                <input id="loginUsername" name="username"
+                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  type="text" required />
+              </div>
+              <div class="mb-6">
+                <label for="loginPassword" class="block text-gray-700 text-sm font-bold mb-2">Password</label>
+                <input id="loginPassword" name="password"
+                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                  type="password" required />
+              </div>
+              <div class="flex items-center justify-between">
+                <button type="submit"
+                  class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline">Sign
+                  In</button>
+                <a href="#" id="switchToSignup"
+                  class="inline-block align-baseline font-bold text-sm text-indigo-600 hover:text-indigo-800">
+                  Need an account?
+                </a>
+              </div>
+            </form>
+      </div>
+      <div id="signupFormContainer"
+        class="<% if (typeof showSignup === 'undefined' || !showSignup) { %> hidden <% } %>">
+        <h2 class="text-2xl font-bold mb-4 text-center">Sign Up</h2>
+        <% if (typeof signupErrors !=='undefined' && signupErrors && signupErrors.length> 0) { %>
+          <div class="error-box">
+            <ul>
+              <% signupErrors.forEach(msg=> { %>
+                <li>
+                  <%= msg %>
+                </li>
+                <% }) %>
+            </ul>
+          </div>
+          <% } %>
+            <form id="signupForm" action="/sign-up" method="POST">
+              <div class="mb-4">
+                <label for="firstName" class="block text-gray-700 text-sm font-bold mb-2">First Name</label>
+                <input id="firstName" name="firstName"
+                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  type="text" value="<%= typeof oldInput !== 'undefined' ? oldInput.firstName || '' : '' %>" required />
+              </div>
+              <div class="mb-4">
+                <label for="lastName" class="block text-gray-700 text-sm font-bold mb-2">Last Name</label>
+                <input id="lastName" name="lastName"
+                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  type="text" value="<%= typeof oldInput !== 'undefined' ? oldInput.lastName || '' : '' %>" required />
+              </div>
+              <div class="mb-4">
+                <label for="signupUsername" class="block text-gray-700 text-sm font-bold mb-2">Username</label>
+                <input id="signupUsername" name="username"
+                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  type="text" value="<%= typeof oldInput !== 'undefined' ? oldInput.username || '' : '' %>" required />
+              </div>
+              <div class="mb-4">
+                <label for="signupPassword" class="block text-gray-700 text-sm font-bold mb-2">Password</label>
+                <input id="signupPassword" name="password"
+                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  type="password" required />
+              </div>
+              <div class="mb-6">
+                <label for="confirmPassword" class="block text-gray-700 text-sm font-bold mb-2">Confirm
+                  Password</label>
+                <input id="confirmPassword" name="confirmPassword"
+                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                  type="password" required />
+              </div>
+              <div class="flex items-center justify-between">
+                <button type="submit"
+                  class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline">Sign
+                  Up</button>
+                <a href="#" id="switchTologin"
+                  class="inline-block align-baseline font-bold text-sm text-indigo-600 hover:text-indigo-800">
+                  Already have an account?
+                </a>
+              </div>
+            </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const authModal = document.getElementById('authModal');
+    const showLoginBtn = document.getElementById('showLoginBtn');
+    const showSignupBtnHeader = document.getElementById('showSignupBtnHeader');
+    const showSignupBtnHero = document.getElementById('showSignupBtnHero');
+    const showSignupBtnCta = document.getElementById('showSignupBtnCta');
+    const loginFormContainer = document.getElementById('loginFormContainer');
+    const signupFormContainer = document.getElementById('signupFormContainer');
+    const switchTologinBtn = document.getElementById('switchTologin');
+    const switchToSignupBtn = document.getElementById('switchToSignup');
+    const closeModalBtn = document.getElementById('closeModal');
+
+    const showModal = () => {
+      authModal.classList.remove('hidden');
+      authModal.classList.add('flex');
+    };
+
+    const hideModal = () => {
+      authModal.classList.add('hidden');
+      authModal.classList.remove('flex');
+    };
+
+    const showLoginForm = (e) => {
+      if (e) e.preventDefault();
+      loginFormContainer.classList.remove('hidden');
+      signupFormContainer.classList.add('hidden');
+      showModal();
+    };
+
+    const showSignupForm = (e) => {
+      if (e) e.preventDefault();
+      signupFormContainer.classList.remove('hidden');
+      loginFormContainer.classList.add('hidden');
+      showModal();
+    };
+
+    // Event listeners for opening and closing the modal
+    showLoginBtn.addEventListener('click', showLoginForm);
+    showSignupBtnHeader.addEventListener('click', showSignupForm);
+    showSignupBtnHero.addEventListener('click', showSignupForm);
+    showSignupBtnCta.addEventListener('click', showSignupForm);
+    closeModalBtn.addEventListener('click', hideModal);
+
+    // Close the modal when clicking outside the content
+    authModal.addEventListener('click', (e) => {
+      if (e.target === authModal) {
+        hideModal();
+      }
+    });
+
+    // Event listeners to switch between forms
+    switchToSignupBtn.addEventListener('click', showSignupForm);
+    switchTologinBtn.addEventListener('click', showLoginForm);
+
+    // New logic to handle server-side rendering with errors
+    window.onload = () => {
+      // The EJS variables 'showLogin' and 'showSignup' are set by the server.
+      // We'll check for their presence and call the appropriate function to display the modal.
+      const showLoginFromServer = "<%= typeof showLogin !== 'undefined' && showLogin %>";
+      const showSignupFromServer = "<%= typeof showSignup !== 'undefined' && showSignup %>";
+
+      if (showLoginFromServer === 'true') {
+        showLoginForm();
+      } else if (showSignupFromServer === 'true') {
+        showSignupForm();
+      }
+    };
+  </script>
+</body>
+
+</html>

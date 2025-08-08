@@ -1,0 +1,33 @@
+<div class="bg-white p-8 rounded-2xl shadow-xl max-w-lg mx-auto">
+  <h1 class="text-4xl font-extrabold mb-6 text-gray-900 flex items-center">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-indigo-500 mr-3" fill="none" viewBox="0 0 24 24"
+      stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1m-3 10H3a2 2 0 01-2-2V9a2 2 0 012-2h4l2 2h4a2 2 0 012 2v6a2 2 0 01-2 2z" />
+    </svg>
+    Create New Folder
+  </h1>
+
+  <form action="/folders" method="POST" class="flex flex-col space-y-6">
+    <div>
+      <label for="name" class="block text-gray-700 font-bold mb-2">Folder Name:</label>
+      <input type="text" id="name" name="name" required
+        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200">
+    </div>
+
+    <button type="submit"
+      class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-full text-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-1">
+      Create Folder
+    </button>
+  </form>
+
+  <div class="mt-8 text-center">
+    <a href="/folders" class="text-gray-500 hover:text-gray-700 font-medium transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-1" fill="none" viewBox="0 0 24 24"
+        stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+      </svg>
+      Back to folders
+    </a>
+  </div>
+</div>

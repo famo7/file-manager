@@ -1,0 +1,100 @@
+<div class="bg-white p-8 rounded-2xl shadow-xl max-w-4xl mx-auto">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-4xl font-extrabold text-gray-900 flex items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-indigo-500 mr-3" fill="none" viewBox="0 0 24 24"
+        stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+      </svg>
+      <%= folder.name %>
+    </h1>
+    <a href="/folders" class="text-gray-500 hover:text-gray-700 font-medium transition-colors flex items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-1" fill="none" viewBox="0 0 24 24"
+        stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+      </svg>
+      Back to folders
+    </a>
+  </div>
+
+  <p class="text-sm text-gray-500 mb-8 border-b pb-4">
+    Created: <span class="font-medium text-gray-700">
+      <%= folder.createdAt ? new Date(folder.createdAt).toLocaleDateString() : 'Unknown' %>
+    </span> |
+    Last Updated: <span class="font-medium text-gray-700">
+      <%= folder.updatedAt ? new Date(folder.updatedAt).toLocaleDateString() : 'Unknown' %>
+    </span>
+  </p>
+
+  <h2 class="text-2xl font-bold mb-4">Files</h2>
+
+  <% if (files && files.length> 0) { %>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <% files.forEach(file=> { %>
+        <div class="relative bg-gray-100 rounded-xl shadow-sm hover:shadow-lg transition-shadow duration-200">
+          <a href="/files/<%= file.id %>" class="block">
+            <% if (file.type.startsWith('image/')) { %>
+              <!-- Use the signedUrl property to display the image -->
+              <img src="<%= file.signedUrl %>" alt="<%= file.name %>" class="w-full h-40 object-cover rounded-t-xl"
+                loading="lazy" />
+              <% } else { %>
+                <div class="flex items-center justify-center h-40 bg-gray-200 rounded-t-xl">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-gray-400" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <% } %>
+          </a>
+          <div class="p-4">
+            <a href="/files/<%= file.id %>"
+              class="font-semibold text-lg text-gray-800 break-words hover:text-indigo-600 transition-colors">
+              <%= file.name %>
+            </a>
+            <div class="text-sm text-gray-500 mt-2">
+              <div class="truncate"><strong>Size:</strong>
+                <%= (file.size / 1024).toFixed(1) %> KB
+              </div>
+              <div class="truncate"><strong>Type:</strong>
+                <%= file.type %>
+              </div>
+            </div>
+            <div class="flex space-x-2 mt-4">
+              <form action="/files/<%= file.id %>/delete" method="POST" class="flex-1">
+                <button type="submit"
+                  class="w-full bg-red-500 hover:bg-red-600 text-white font-medium py-2 rounded-full text-sm transition-colors">
+                  Delete
+                </button>
+              </form>
+              <a href="/files/<%= file.id %>/download"
+                class="flex-1 text-center bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 rounded-full text-sm transition-colors">
+                Download
+              </a>
+            </div>
+          </div>
+        </div>
+        <% }) %>
+    </div>
+    <% } else { %>
+      <p class="text-center text-gray-500 py-8">No files in this folder yet.</p>
+      <% } %>
+
+        <div class="mt-10 p-6 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200">
+          <h3 class="text-xl font-bold mb-4">Upload a new file</h3>
+          <form action="/files/upload" method="POST" enctype="multipart/form-data" class="flex flex-col space-y-4">
+            <input type="hidden" name="folderId" value="<%= folder.id %>" />
+            <input type="file" id="file" name="file" required class="block w-full text-sm text-gray-500
+        file:mr-4 file:py-2 file:px-4
+        file:rounded-full file:border-0
+        file:text-sm file:font-semibold
+        file:bg-indigo-50 file:text-indigo-700
+        hover:file:bg-indigo-100 cursor-pointer
+      " />
+            <button type="submit"
+              class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-full text-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out">
+              Upload
+            </button>
+          </form>
+        </div>
+</div>
